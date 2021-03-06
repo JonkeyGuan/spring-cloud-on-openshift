@@ -1,0 +1,6 @@
+spec:
+  to:
+    kind: Service
+    name: service-config
+  port:
+    targetPort: 8888

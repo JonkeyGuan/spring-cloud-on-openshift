@@ -1,25 +1,54 @@
+management:
+  endpoints:
+    web.exposure.include: "*"
+    health.show-details: always
+
+eureka:
+  instance:
+    prefer-ip-address: false
+    instance-id: ${HOSTNAME:${spring.application.name}}:${server.port}
+    startup: ${random.int}
+    health-check-url-path: /actuator/health
+  client:
+    registryFetchIntervalSeconds: 5
+---
+
 spring:
-  profiles: local
-  
+  config:
+    activate:
+      on-profile: local
+
+  zipkin:
+    base-url: http://localhost:8086
+
+  sleuth:
+    sampler:
+      probability: 1.0
+
 eureka:
   client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/,http://localhost:8762/eureka/
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
 
 ---
 spring:
-  profiles: docker
+  config:
+    activate:
+      on-profile: openshift
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://service-registry-0:8761/eureka/,http://service-registry-1:8762/eureka/
+  zipkin:
+    base-url: http://zipkin:8080
 
----
-spring:
-  profiles: openshift
+  sleuth:
+    sampler:
+      probability: 1.0
+
   
 eureka:
   client:
-    service-url:
-      defaultZone: http://service-registry-0.svc:8761/eureka/,http://service-registry-1.svc:8761/eureka/
+    serviceUrl:
+      defaultZone: http://service-registry-0.service-registry:8761/eureka/,http://service-registry-1.service-registry:8761/eureka/
+  instance:
+      instance-id: ${POD_NAME:${spring.application.name}}:${server.port}
+      hostname: ${HOSTNAME:${spring.application.name}}
+      

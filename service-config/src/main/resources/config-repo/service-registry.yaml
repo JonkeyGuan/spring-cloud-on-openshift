@@ -1,48 +1,37 @@
-eureka:
-  instance:
-    lease-renewal-interval-in-seconds: 10
-    prefer-ip-address: true
-    instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
-  client:
-    fetchRegistry: true
-  server:
-    enable-self-preservation: true
-    
----
 spring:
-  profiles: local, docker
-    
+  application:
+    name: service-registry
+
 server:
   port: 8761
   
 eureka:
   instance:
-    hostname: service-registry-0
+    prefer-ip-address: false
+    instance-id: ${POD_NAME:${spring.application.name}}:${server.port}
+    hostname: ${HOSTNAME:${spring.application.name}}
+    lease-expiration-duration-in-seconds: 30
+    lease-renewal-interval-in-seconds: 5
+  server:
+    enable-self-preservation: true
+    eviction-interval-timer-in-ms: 5000
   client:
-    serviceUrl:
-      defaultZone: http://localhost:8762/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+logging:
+  level:
+    com:
+      netflix:
+        eureka: OFF
+        discovery: OFF
 
 ---
 spring:
-  profiles: local-1, docker-1
-    
-server:
-  port: 8762
-  
+  config:
+    activate:
+      on-profile: local
 eureka:
   instance:
-    hostname: service-registry-1
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
----
-spring:
-  profiles: openshift
-    
-server:
-  port: 8761
-  
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://service-registry-0.svc:8762/eureka/:http://service-registry-1.svc:8761/eureka/
+    prefer-ip-address: true
+    hostname: ${spring.cloud.client.ip-address}:${server.port}

@@ -1,0 +1,23 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: admin
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+  boot:
+    admin:
+      monitor:
+        default-retries: 3
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+server:
+  port: 8085

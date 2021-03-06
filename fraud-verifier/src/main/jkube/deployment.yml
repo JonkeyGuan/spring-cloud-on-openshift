@@ -1,0 +1,16 @@
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - env:
+            - name: JAVA_OPTIONS
+              value: "-Dspring.profiles.active=openshift -Dspring.cloud.config.uri=http://service-config:8888/"
+            - name: AB_JOLOKIA_OFF
+              value: "true"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: HOSTNAME
+              value: "fraud-verifier"

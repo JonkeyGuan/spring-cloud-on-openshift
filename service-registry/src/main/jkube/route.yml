@@ -1,0 +1,6 @@
+spec:
+  to:
+    kind: Service
+    name: service-registry
+  port:
+    targetPort: 8761

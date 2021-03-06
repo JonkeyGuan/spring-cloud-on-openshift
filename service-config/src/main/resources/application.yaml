@@ -4,31 +4,36 @@ spring:
   profiles:
     active: native
     
-server:
-  port: 8888
- 
 management:
   endpoints:
     web.exposure.include=*
 
 ---
+server:
+  port: 8888
+
 spring:
-  profiles:
-    activate: 
+  config:
+    activate:
       on-profile: native
   cloud:
     config:
       server:
         native:
-          search-locations: classpath:/config-repo/
+          search-locations: classpath:/config-repo
 ---
+server:
+  port: 8888
+
 spring:
-  profiles:
-    activate: 
-      on-profile: docker, openshift
+  config:
+    activate:
+      on-profile: openshift
   cloud:
     config:
       server:
         git:
-          uri: https://github.com/JonkeyGuan/spring-cloud-on-openshift
-          search-paths: service/config/src/main/resources/config-repo
+          uri: https://gitee.com/JonkeyGuan/spring-cloud-on-openshift
+          search-paths: service-config/src/main/resources/config-repo
+          default-label: master
+          skipSslValidation: true

@@ -1,0 +1,19 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: user-service
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+server:
+  port: 8082
