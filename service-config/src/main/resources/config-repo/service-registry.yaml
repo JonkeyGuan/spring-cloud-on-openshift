@@ -12,12 +12,14 @@ eureka:
     hostname: ${HOSTNAME:${spring.application.name}}
     lease-expiration-duration-in-seconds: 30
     lease-renewal-interval-in-seconds: 5
+    health-check-url-path: /actuator/health
   server:
     enable-self-preservation: true
     eviction-interval-timer-in-ms: 5000
   client:
     register-with-eureka: true
     fetch-registry: true
+    registryFetchIntervalSeconds: 5
 
 logging:
   level:

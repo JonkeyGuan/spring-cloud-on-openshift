@@ -11,6 +11,8 @@ eureka:
     health-check-url-path: /actuator/health
   client:
     registryFetchIntervalSeconds: 5
+    auto-deregistration: true
+    register-once: false
 ---
 
 spring:
