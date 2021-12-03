@@ -35,5 +35,5 @@ spring:
         git:
           uri: https://github.com/JonkeyGuan/spring-cloud-on-openshift
           search-paths: service-config/src/main/resources/config-repo
-          default-label: master
+          default-label: main
           skipSslValidation: true
